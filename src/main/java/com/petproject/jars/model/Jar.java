@@ -29,6 +29,13 @@ public class Jar extends AuditModel {
 
     private BigDecimal amount;
 
+    public Jar(String name, String description, Integer percentage, BigDecimal amount){
+        this.name=name;
+        this.description=description;
+        this.percentage=percentage;
+        this.amount=amount;
+    }
+
 
     public Long getId() {
         return id;
