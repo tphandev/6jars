@@ -15,7 +15,8 @@ public class Category extends AuditModel {
     @Size(min=3,max=100)
     private String name;
 
-    private Integer type;
+    @Enumerated(EnumType.ORDINAL)
+    private TransactionType type;
 
     public Long getId() {
         return id;
@@ -33,11 +34,12 @@ public class Category extends AuditModel {
         this.name = name;
     }
 
-    public Integer getType() {
+
+    public TransactionType getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(TransactionType type) {
         this.type = type;
     }
 }
