@@ -31,6 +31,11 @@ public class JarService {
         return jarRepository.findAll();
     }
 
+    public Jar getJar(Long id){
+
+        return jarRepository.findById(id).get();
+    }
+
     public List<Jar> updateJars(List<Jar> jars){
         if(vaildJar(jars)){
            return jarRepository.saveAll(jars);
