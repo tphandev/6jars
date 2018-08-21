@@ -20,6 +20,7 @@ public class TransactionService {
     @Autowired
     private JarRepository jarRepository;
 
+
     @Transactional
     public Transaction addTransaction (Transaction transaction){
 
@@ -35,11 +36,11 @@ public class TransactionService {
         jarAmount=jar.getAmount().add(transactionAmount);
         jar.setAmount(jarAmount);
         jarRepository.save(jar);
-
         return transactionRepository.save(transaction);
     }
 
 
+    @Transactional
     public void deleteTransaction (Long id){
         BigDecimal jarAmount= new BigDecimal(0);
         Transaction transaction= transactionRepository.findById(id).get();

@@ -29,6 +29,11 @@ public class Transaction extends AuditModel {
     @JsonIgnore
     private Jar jar;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "income_id")
+    @JsonIgnore
+    private Income income;
+
 
     @Column(columnDefinition = "text")
     private String note;
@@ -36,6 +41,16 @@ public class Transaction extends AuditModel {
     @Temporal(TemporalType.DATE)
     @Column(name = "transaction_date",nullable = false)
     private Date transactionDate;
+
+    public Transaction(){};
+    public Transaction(BigDecimal amount, Category category, Jar jar,Income income, String note, Date transactionDate){
+        this.amount=amount;
+        this.category=category;
+        this.jar=jar;
+        this.income=income;
+        this.note=note;
+        this.transactionDate=transactionDate;
+    }
 
     public Long getId() {
         return id;
@@ -83,5 +98,13 @@ public class Transaction extends AuditModel {
 
     public void setTransactionDate(Date transactionDate) {
         this.transactionDate = transactionDate;
+    }
+
+    public Income getIncome() {
+        return income;
+    }
+
+    public void setIncome(Income income) {
+        this.income = income;
     }
 }
