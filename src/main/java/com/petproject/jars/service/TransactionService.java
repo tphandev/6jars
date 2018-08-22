@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Service
 public class TransactionService {
@@ -24,10 +25,9 @@ public class TransactionService {
     @Transactional
     public Transaction addTransaction (Transaction transaction){
 
-        BigDecimal jarAmount= new BigDecimal(0);
+        BigDecimal jarAmount;
         BigDecimal transactionAmount= transaction.getAmount();
-
-        Jar jar= jarRepository.findById(transaction.getJar().getId()).get();
+        Jar jar= transaction.getJar();
 
         if(transaction.getCategory().getType().equals(TransactionType.Outcome)){
             transactionAmount=transactionAmount.multiply(new BigDecimal(-1));
@@ -41,14 +41,17 @@ public class TransactionService {
 
 
     @Transactional
-    public void deleteTransaction (Long id){
-        BigDecimal jarAmount= new BigDecimal(0);
-        Transaction transaction= transactionRepository.findById(id).get();
+    public void deleteTransaction (Transaction transaction){
+        BigDecimal jarAmount;
         Jar jar=transaction.getJar();
         jarAmount= jar.getAmount().subtract(transaction.getAmount());
         jar.setAmount(jarAmount);
         jarRepository.save(jar);
         transactionRepository.delete(transaction);
+    }
+
+    public Optional<Transaction> getTransaction(Long id){
+        return transactionRepository.findById(id);
     }
 
 }

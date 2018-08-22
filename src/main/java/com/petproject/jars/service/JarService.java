@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class JarService {
@@ -31,9 +32,9 @@ public class JarService {
         return jarRepository.findAll();
     }
 
-    public Jar getJar(Long id){
+    public Optional<Jar> getJar(Long id){
 
-        return jarRepository.findById(id).get();
+        return jarRepository.findById(id);
     }
 
     public List<Jar> updateJars(List<Jar> jars){

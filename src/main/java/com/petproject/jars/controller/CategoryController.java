@@ -24,9 +24,11 @@ public class CategoryController {
     @GetMapping("/categories/{categoryId}")
     public Category getCategory(@PathVariable Long categoryId){
         try {
-            return categoryService.getCategory(categoryId);
+            return categoryService.getCategory(categoryId).orElseThrow(
+                    ()-> new ResourceNotFoundException("Category not found with id: "+categoryId));
+
         }catch (Exception ex){
-            throw new ResourceNotFoundException("Category not found with id "+categoryId);
+            throw ex;
         }
     }
 

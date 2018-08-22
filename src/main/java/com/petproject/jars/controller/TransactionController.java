@@ -1,5 +1,6 @@
 package com.petproject.jars.controller;
 
+import com.petproject.jars.exception.ResourceNotFoundException;
 import com.petproject.jars.model.Category;
 import com.petproject.jars.model.Jar;
 import com.petproject.jars.model.Transaction;
@@ -27,8 +28,11 @@ public class TransactionController {
                                       @RequestParam(value = "jarId") Long jarId,
                                       @RequestParam(value = "categoryId") Long categoryId
     ){
-        Jar jar=jarService.getJar(jarId);
-        Category category = categoryService.getCategory(categoryId);
+        Jar jar=jarService.getJar(jarId).orElseThrow(
+                ()-> new ResourceNotFoundException("Jar not found with id: "+jarId));
+        Category category = categoryService.getCategory(categoryId).orElseThrow(
+                ()-> new ResourceNotFoundException("Category not found with id: "+categoryId));
+
         transaction.setCategory(category);
         transaction.setJar(jar);
         return transactionService.addTransaction(transaction);
@@ -36,7 +40,9 @@ public class TransactionController {
 
     @DeleteMapping("/transactions/{transactionId}")
     public ResponseEntity<?> deleteTransaction(@PathVariable Long transactionId){
-        transactionService.deleteTransaction(transactionId);
+        Transaction transaction= transactionService.getTransaction(transactionId).orElseThrow(
+                ()-> new ResourceNotFoundException("Transaction not found with id: "+transactionId));
+        transactionService.deleteTransaction(transaction);
         return ResponseEntity.ok().build();
     }
 }
